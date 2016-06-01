@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/lucasmedeirosleite'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|metrics)/}) }
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
@@ -26,6 +26,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'mongoid-rspec', '~> 3.0'
   spec.add_development_dependency 'factory_girl', '~> 4.7'
   spec.add_development_dependency 'database_cleaner', '~> 1.5'
+
+  spec.add_development_dependency 'simplecov', '~> 0.11.2'
+  spec.add_development_dependency 'brakeman', '~> 3.3'
+  spec.add_development_dependency 'rubocop', '~> 0.40.0'
+  spec.add_development_dependency 'rubycritic', '~> 2.9'
 
   spec.add_development_dependency 'pry-byebug', '~> 3.4.0'
 end

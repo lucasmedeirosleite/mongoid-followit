@@ -10,6 +10,19 @@ require 'mongoid_followit'
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each   {|f| require f}
 Dir[File.dirname(__FILE__) + '/factories/**/*.rb'].each {|f| require f}
 
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    coverage_dir 'metrics/simplecov'
+
+    add_filter 'bin'
+    add_filter 'metrics'
+    add_filter 'spec'
+
+    add_group 'Library', 'lib'
+  end
+end
+
 Mongo::Logger.logger.level = ::Logger::FATAL
 Mongoid.configure do |config|
   config.connect_to("mongoid_followit_test")

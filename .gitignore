@@ -7,4 +7,9 @@
 /pkg/
 /spec/reports/
 /tmp/
-/metrics/
+
+# Metrics
+metrics/brakeman/report.html
+metrics/rubocop/report.html
+metrics/simplecov
+metrics/rubycritic
