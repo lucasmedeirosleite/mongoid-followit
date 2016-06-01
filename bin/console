@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "mongoid_followit"
+require 'bundler/setup'
+require 'mongoid_followit'
 
-require "pry-byebug"
+require 'pry-byebug'
 Pry.start

@@ -1,4 +1,4 @@
-require "mongoid_followit/version"
+require 'mongoid_followit/version'
 
 module Mongoid
   module Followit
