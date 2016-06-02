@@ -21,7 +21,7 @@ module Mongoid
         warn_non_unfollowee_existence followees
         followees.each do |followee|
           run_callbacks :follow do
-            Follow.create!({
+            Follow.find_or_create_by!({
               followee_class: followee.class.to_s,
               followee_id: followee.id,
               follower_class: self.class.to_s,
@@ -39,7 +39,7 @@ module Mongoid
             followee_id: followee.id,
             follower_class: self.class.to_s,
             follower_id: self.id
-          }).destroy
+          }).try(:destroy)
         end
       end
 

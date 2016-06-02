@@ -49,7 +49,7 @@ describe Mongoid::Followit::Follower do
     context 'when passing followable objects' do
       context 'when passing one object' do
         it 'follows the object' do
-          expect(Follow).to receive(:create!).with({
+          expect(Follow).to receive(:find_or_create_by!).with({
             followee_class: admin.class.to_s,
             followee_id: admin.id,
             follower_class: user.class.to_s,
@@ -61,7 +61,7 @@ describe Mongoid::Followit::Follower do
 
       context 'when passing more than one object' do
         it 'follows the objects' do
-          expect(Follow).to receive(:create!).twice
+          expect(Follow).to receive(:find_or_create_by!).twice
           user.follow(admin, sales)
         end
       end
