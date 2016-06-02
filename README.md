@@ -1,4 +1,4 @@
-# Mongoid::Followit
+# Mongoid::Followit [![Build Status](https://travis-ci.org/lucasmedeirosleite/mongoid-followit.svg)](https://travis-ci.org/lucasmedeirosleite/mongoid-followit)
 
 
 ## Installation
