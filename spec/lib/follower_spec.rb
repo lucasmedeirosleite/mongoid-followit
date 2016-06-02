@@ -68,4 +68,11 @@ describe Mongoid::Followit::Follower do
       end
     end
   end
+
+  describe 'callbacks' do
+    it { expect(user.class).to include ActiveSupport::Callbacks }
+
+    it { expect(user.class).to respond_to(:before_follow) }
+    it { expect(user.class).to respond_to(:after_follow) }
+  end
 end
