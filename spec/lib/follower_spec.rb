@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Mongoid::Followit::Follower do
   subject(:user) { FactoryGirl.create(:user) }
+  let(:admin) { FactoryGirl.create(:group, :admin) }
+  let(:sales) { FactoryGirl.create(:group, :sales)}
 
   it 'must be a mongoid document' do
     expect(user).to be_a(Mongoid::Document)
@@ -45,9 +47,6 @@ describe Mongoid::Followit::Follower do
     end
 
     context 'when passing followable objects' do
-      let(:admin) { FactoryGirl.create(:group, :admin) }
-      let(:sales) { FactoryGirl.create(:group, :sales)}
-
       context 'when passing one object' do
         it 'follows the object' do
           expect(Follow).to receive(:create!).with({
@@ -69,10 +68,53 @@ describe Mongoid::Followit::Follower do
     end
   end
 
+  describe '#unfollow' do
+    context 'when passing a non followee object' do
+      context 'when passing one object' do
+        it 'warns that cannot be followed' do
+          expect{
+            user.unfollow(double)
+          }.to raise_error('Object(s) must include a Mongoid::Followit::Followee')
+        end
+      end
+
+      context 'when passing more than one object' do
+        it 'warns that cannot be followed' do
+          expect{
+            user.unfollow(double, double)
+          }.to raise_error('Object(s) must include a Mongoid::Followit::Followee')
+        end
+      end
+    end
+
+    context 'when passing followable objects' do
+      context 'when passing one object' do
+        it 'unfollows the object' do
+          expect(Follow).to receive_message_chain(:find_by, :destroy)
+          user.unfollow(admin)
+        end
+      end
+
+      context 'when passing more than one object' do
+        it 'unfollows the objects' do
+          call_count = 0
+          allow(Follow).to receive_message_chain(:find_by, :destroy) do
+            call_count += 1
+          end
+          user.unfollow(admin, sales)
+          expect(call_count).to eq 2
+        end
+      end
+    end
+  end
+
   describe 'callbacks' do
     it { expect(user.class).to include ActiveSupport::Callbacks }
 
     it { expect(user.class).to respond_to(:before_follow) }
     it { expect(user.class).to respond_to(:after_follow) }
+
+    it { expect(user.class).to respond_to(:before_unfollow) }
+    it { expect(user.class).to respond_to(:after_unfollow) }
   end
 end

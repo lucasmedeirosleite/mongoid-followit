@@ -4,15 +4,16 @@ module Mongoid
       def self.included(base)
         base.class_eval do
           include ActiveSupport::Callbacks
-          define_callbacks :follow
+          define_callbacks :follow, :unfollow
         end
 
-        [ 'before', 'after' ].freeze.each do |callback|
-          base.define_singleton_method("#{callback}_follow") do |*args, &block|
-            set_callback(:follow, callback.to_sym, *args, &block)
+        ['before', 'after'].freeze.each do |callback|
+          ['follow', 'unfollow'].freeze.each do |action|
+            base.define_singleton_method("#{callback}_#{action}") do |*args, &block|
+              set_callback(action.to_sym, callback.to_sym, *args, &block)
+            end
           end
         end
-
       end
 
       def follow(*followees)
@@ -29,7 +30,16 @@ module Mongoid
         end
       end
 
-      def unfollow
+      def unfollow(*followees)
+        warn_non_unfollowee_existence followees
+        followees.each do |followee|
+          Follow.find_by({
+            followee_class: followee.class.to_s,
+            followee_id: followee.id,
+            follower_class: self.class.to_s,
+            follower_id: self.id
+          }).destroy
+        end
       end
 
       def followees
