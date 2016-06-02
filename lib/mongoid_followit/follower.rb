@@ -5,6 +5,7 @@ module Mongoid
         base.class_eval do
           include ActiveSupport::Callbacks
           define_callbacks :follow, :unfollow
+          before_destroy :destroy_follow_data
         end
 
         ['before', 'after'].freeze.each do |callback|
@@ -51,6 +52,13 @@ module Mongoid
         unless followees.any? { |f| f.kind_of?(Mongoid::Followit::Followee) }
           raise 'Object(s) must include a Mongoid::Followit::Followee'
         end
+      end
+
+      def destroy_follow_data
+        Follow.where(followee_class: self.class.to_s, followee_id: self.id)
+              .destroy_all
+        Follow.where(follower_class: self.class.to_s, follower_id: self.id)
+              .destroy_all
       end
     end
   end

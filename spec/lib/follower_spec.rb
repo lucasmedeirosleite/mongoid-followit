@@ -108,6 +108,29 @@ describe Mongoid::Followit::Follower do
     end
   end
 
+  describe '#destroy' do
+    before do
+      Follow.create!({
+        followee_class: '',
+        followee_id: '',
+        follower_class: user.class.to_s,
+        follower_id: user.id
+      })
+
+      Follow.create!({
+        followee_class: user.class.to_s,
+        followee_id: user.id,
+        follower_class: '',
+        follower_id: ''
+      })
+    end
+
+    it 'destroys its related follow data' do
+      user.destroy
+      expect(Follow.all).to be_empty
+    end
+  end
+
   describe 'callbacks' do
     it { expect(user.class).to include ActiveSupport::Callbacks }
 
