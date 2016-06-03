@@ -19,27 +19,31 @@ module Mongoid
 
       def follow(*followees)
         warn_non_unfollowee_existence followees
-        followees.each do |followee|
-          run_callbacks :follow do
-            Follow.find_or_create_by!({
-              followee_class: followee.class.to_s,
-              followee_id: followee.id,
-              follower_class: self.class.to_s,
-              follower_id: self.id
-            })
+
+        run_callbacks :follow do
+          followees.each do |followee|
+              Follow.find_or_create_by!({
+                followee_class: followee.class.to_s,
+                followee_id: followee.id,
+                follower_class: self.class.to_s,
+                follower_id: self.id
+              })
           end
         end
       end
 
       def unfollow(*followees)
         warn_non_unfollowee_existence followees
-        followees.each do |followee|
-          Follow.find_by({
-            followee_class: followee.class.to_s,
-            followee_id: followee.id,
-            follower_class: self.class.to_s,
-            follower_id: self.id
-          }).try(:destroy)
+
+        run_callbacks :unfollow do
+          followees.each do |followee|
+            Follow.find_by({
+              followee_class: followee.class.to_s,
+              followee_id: followee.id,
+              follower_class: self.class.to_s,
+              follower_id: self.id
+            }).try(:destroy)
+          end
         end
       end
 
@@ -55,10 +59,8 @@ module Mongoid
       end
 
       def destroy_follow_data
-        Follow.where(followee_class: self.class.to_s, followee_id: self.id)
-              .destroy_all
-        Follow.where(follower_class: self.class.to_s, follower_id: self.id)
-              .destroy_all
+        Follow.or({ followee_class: self.class.to_s, followee_id: self.id  },
+                  { follower_class: self.class.to_s, follower_id: self.id  }).destroy_all
       end
     end
   end
