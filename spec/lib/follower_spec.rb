@@ -184,7 +184,7 @@ describe Mongoid::Followit::Follower do
           user.follow(admin, sales)
         end
 
-        it 'returns an array of its followees' do
+        it 'returns a criteria of its followees' do
           expect(user.followees(criteria: true).to_a).to eq [admin, sales]
         end
       end
