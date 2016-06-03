@@ -140,4 +140,68 @@ describe Mongoid::Followit::Follower do
     it { expect(user.class).to respond_to(:before_unfollow) }
     it { expect(user.class).to respond_to(:after_unfollow) }
   end
+
+  describe '#followees' do
+    context 'when criteria false' do
+      context 'when there is no followees' do
+        it 'returns an empty array' do
+          expect(user.followees).to be_empty
+        end
+      end
+
+      context 'when there are followees of one type' do
+        before do
+          user.follow(admin, sales)
+        end
+
+        it 'returns an array of its followees' do
+          expect(user.followees).to eq [admin, sales]
+        end
+      end
+
+      context 'when there are followees of different types' do
+        let(:role) { FactoryGirl.create(:role) }
+
+        before do
+          user.follow(admin, sales, role)
+        end
+
+        it 'returns an array of its followees' do
+          expect(user.followees).to eq [admin, sales, role]
+        end
+      end
+    end
+
+    context 'when criteria true' do
+      context 'when there is no followees' do
+        it 'returns none' do
+          expect(user.followees(criteria: true)).to eq Follow.none
+        end
+      end
+
+      context 'when there are followees of one type' do
+        before do
+          user.follow(admin, sales)
+        end
+
+        it 'returns an array of its followees' do
+          expect(user.followees(criteria: true).to_a).to eq [admin, sales]
+        end
+      end
+
+      context 'when there are followees of different types' do
+        let(:role) { FactoryGirl.create(:role) }
+
+        before do
+          user.follow(admin, sales, role)
+        end
+
+        it 'warns that follows two different types' do
+          expect {
+            user.followees(criteria: true)
+          }.to raise_error 'HasTwoFolloweeTypesError'
+        end
+      end
+    end
+  end
 end
