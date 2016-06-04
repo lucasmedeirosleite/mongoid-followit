@@ -1,13 +1,9 @@
 module Mongoid
   module Followit
     module Followee
-
       def followers(criteria: false)
-        grouped = Follow.where({
-          followee_class: self.class,
-          followee_id: self.id
-        }).group_by { |f| f.follower_class }
-
+        grouped = Follow.where(followee_class: self.class, followee_id: id)
+                        .group_by(&:follower_class)
         criteria ? followers_as_criteria(grouped) : followers_as_array(grouped)
       end
 
@@ -23,7 +19,7 @@ module Mongoid
         return Follow.none if grouped.empty?
         raise 'HasTwoFollowerTypesError' if grouped.length > 1
         follower_class = grouped.keys.first
-        follower_ids = grouped[follower_class].map { |f| f.follower_id }
+        follower_ids = grouped[follower_class].map(&:follower_id)
         follower_class.constantize.in(id: follower_ids)
       end
     end
