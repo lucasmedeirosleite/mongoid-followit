@@ -1,4 +1,8 @@
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+if ENV['COVERAGE']
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
+end
+
 require 'pry-byebug'
 require 'mongoid'
 
@@ -10,11 +14,6 @@ require 'mongoid_followit'
 
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each   {|f| require f}
 Dir[File.dirname(__FILE__) + '/factories/**/*.rb'].each {|f| require f}
-
-if ENV['COVERAGE']
-  require 'codeclimate-test-reporter'
-  CodeClimate::TestReporter.start
-end
 
 Mongo::Logger.logger.level = ::Logger::FATAL
 Mongoid.configure do |config|
