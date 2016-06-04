@@ -12,16 +12,8 @@ Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each   {|f| require f}
 Dir[File.dirname(__FILE__) + '/factories/**/*.rb'].each {|f| require f}
 
 if ENV['COVERAGE']
-  require 'simplecov'
-  SimpleCov.start do
-    coverage_dir 'metrics/simplecov'
-
-    add_filter 'bin'
-    add_filter 'metrics'
-    add_filter 'spec'
-
-    add_group 'Library', 'lib'
-  end
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
 end
 
 Mongo::Logger.logger.level = ::Logger::FATAL
