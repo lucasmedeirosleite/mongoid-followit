@@ -1,4 +1,11 @@
+AllCops:
+  TargetRubyVersion: 2.1
+  Exclude:
+    - 'metrics/**/*'
+    - 'spec/**/*'
+
 Style/Documentation:
   Enabled: false
+
 Rails:
   Enabled: false
