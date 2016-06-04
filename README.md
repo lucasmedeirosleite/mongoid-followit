@@ -1,4 +1,4 @@
-# Mongoid::Followit [![Build Status](https://travis-ci.org/lucasmedeirosleite/mongoid-followit.svg)](https://travis-ci.org/lucasmedeirosleite/mongoid-followit)
+# Mongoid::Followit [![Build Status](https://travis-ci.org/lucasmedeirosleite/mongoid-followit.svg)](https://travis-ci.org/lucasmedeirosleite/mongoid-followit) [![Code Climate](https://codeclimate.com/github/lucasmedeirosleite/mongoid-followit/badges/gpa.svg)](https://codeclimate.com/github/lucasmedeirosleite/mongoid-followit) [![Test Coverage](https://codeclimate.com/github/lucasmedeirosleite/mongoid-followit/badges/coverage.svg)](https://codeclimate.com/github/lucasmedeirosleite/mongoid-followit/coverage)
 
 
 ## Installation
