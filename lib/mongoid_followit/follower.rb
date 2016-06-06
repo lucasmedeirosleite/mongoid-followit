@@ -65,20 +65,6 @@ module Mongoid
         follower_params = { follower_class: self.class.to_s, follower_id: id  }
         Follow.or(followee_params, follower_params).destroy_all
       end
-
-      def followees_as_criteria(grouped)
-        return Follow.none if grouped.empty?
-        raise 'HasTwoFolloweeTypesError' if grouped.length > 1
-        followee_class = grouped.keys.first
-        followee_ids = grouped[followee_class].map(&:followee_id)
-        followee_class.constantize.in(id: followee_ids)
-      end
-
-      def followees_as_array(grouped)
-        grouped.values.flatten.map do |follow|
-          follow.followee_class.constantize.find(follow.followee_id)
-        end
-      end
     end
   end
 end
