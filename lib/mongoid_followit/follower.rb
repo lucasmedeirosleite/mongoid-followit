@@ -15,15 +15,14 @@ module Mongoid
       end
 
       def followees(criteria: false)
-        grouped = Follow.where(follower_class: self.class, follower_id: id)
-                        .group_by(&:followee_class)
-        criteria ? followees_as_criteria(grouped) : followees_as_array(grouped)
+        follow_collection_for_a(:followee, criteria: criteria)
       end
 
       private_class_method
 
       def self.add_callbacks(base)
         base.class_eval do
+          include Mongoid::Followit::Queryable
           include ActiveSupport::Callbacks
           define_callbacks :follow, :unfollow
           before_destroy :destroy_follow_data
