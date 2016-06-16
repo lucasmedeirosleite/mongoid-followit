@@ -1,6 +1,28 @@
 module Mongoid
   module Followit
+
+    # Internal: Module that add query capabilities Follower/Followee model.
+    #
+    # Examples
+    #
+    #   module Follower
+    #     def self.included(base)
+    #       base.class_eval do
+    #         include Mongoid::Followit::Queryable
+    #       end
+    #     end
+    #   end
+    #
+    #   module Followee
+    #     def self.included(base)
+    #       base.class_eval do
+    #         include Mongoid::Followit::Queryable
+    #       end
+    #     end
+    #   end
     module Queryable
+
+      # Internal: Hash of options to build a query for the Follow collection.
       FOLLOW_OPTIONS = {
         followee: {
           opposite_class: :follower_class,
