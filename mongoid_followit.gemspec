@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 1.11'
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'mongoid', '~> 5.1'
+  spec.add_development_dependency 'mongoid', '>= 4.0.0'
 
   spec.add_development_dependency 'rubycritic', '~> 2.9'
   spec.add_development_dependency 'pry-byebug', '~> 3.4.0'
