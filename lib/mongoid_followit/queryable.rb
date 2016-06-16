@@ -1,6 +1,7 @@
 module Mongoid
   module Followit
 
+    ##
     # Internal: Module that add query capabilities Follower/Followee model.
     #
     # Examples

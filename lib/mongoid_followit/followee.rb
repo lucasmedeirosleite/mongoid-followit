@@ -1,6 +1,7 @@
 module Mongoid
   module Followit
 
+    ##
     # Public: Module that add followee capabilities to a Mongoid model.
     # Important: A model can only be followed if it is a Followee one.
     #
@@ -17,6 +18,7 @@ module Mongoid
         end
       end
 
+      ##
       # Public: Peform a query to return all Mongoid model followers.
       #
       # criteria(optional) - if true the return will be the type of

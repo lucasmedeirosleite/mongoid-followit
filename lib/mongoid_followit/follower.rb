@@ -1,6 +1,7 @@
 module Mongoid
   module Followit
 
+    ##
     # Public: Module that add follower capabilities to a Mongoid model.
     #
     # Examples
@@ -22,6 +23,7 @@ module Mongoid
         generate_callbacks(base)
       end
 
+      ##
       # Public: Creates Follow entries, for the Followee models, representing
       #         the models that are being followed.
       #
@@ -40,6 +42,7 @@ module Mongoid
         perform_followable_action(:follow, followees)
       end
 
+      ##
       # Public: Destroys the Follow entries, for the Followee models,
       #         making the Followee models to be unfollowed.
       #
@@ -56,6 +59,7 @@ module Mongoid
         perform_followable_action(:unfollow, followees)
       end
 
+      ##
       # Public: Peform a query to return all Mongoid model
       #         that model is following.
       #
@@ -85,6 +89,7 @@ module Mongoid
 
       private_class_method
 
+      ##
       # Internal: Class method that configures the Mongoid model which has
       #           Mongoid::Followit::Follower model included.
       #
@@ -102,6 +107,7 @@ module Mongoid
         end
       end
 
+      ##
       # Internal: Class method that generate callbacks
       #           for the #follow and #unfollow methods.
       #
@@ -141,6 +147,7 @@ module Mongoid
         end
       end
 
+      ##
       # Internal: Before destroy filter used to clean Mongoid model related
       #           data from the Follow collection.
       #
