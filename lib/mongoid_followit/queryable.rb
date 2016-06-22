@@ -52,6 +52,11 @@ module Mongoid
         end
       end
 
+      def follow_count_for_a(behavior)
+        options = query_options_for_a(behavior)
+        Follow.where(options).count
+      end
+
       private
 
       def query_options_for_a(behavior)

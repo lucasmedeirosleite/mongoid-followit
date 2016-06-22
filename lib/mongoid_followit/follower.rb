@@ -87,6 +87,23 @@ module Mongoid
         follow_collection_for_a(:followee, criteria: criteria)
       end
 
+      ##
+      # Public: Peform a query to return the total of Mongoid model
+      #         that model is following.
+      #
+      # Examples
+      #
+      #   # => user.follow(another_user)
+      #   # => user.follow(different_user)
+      #   # => user.followees_count
+      #   # => 2
+      #
+      # Returns 0 if model is not following anybody.
+      # Returns The total of models that the model is following.
+      def followees_count
+        follow_count_for_a(:followee)
+      end
+
       private_class_method
 
       ##

@@ -17,6 +17,10 @@ describe Mongoid::Followit::Followee do
     it 'can have followers' do
       expect(admin).to respond_to(:followers)
     end
+
+    it 'can retrieve followers count' do
+      expect(admin).to respond_to(:followers_count)
+    end
   end
 
   describe '#followers' do
@@ -86,6 +90,24 @@ describe Mongoid::Followit::Followee do
         end
       end
 
+    end
+  end
+
+  describe '#followers_count' do
+    context 'when there is no followers' do
+      it 'total is zero' do
+        expect(admin.followers_count).to be 0
+      end
+    end
+
+    context 'when there are followers' do
+      before do
+        user.follow(admin)
+      end
+
+      it 'total is more than zero' do
+        expect(admin.followers_count).to be > 0
+      end
     end
   end
 end

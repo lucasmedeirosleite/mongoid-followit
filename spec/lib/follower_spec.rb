@@ -25,6 +25,10 @@ describe Mongoid::Followit::Follower do
     it 'can have followees' do
       expect(user).to respond_to(:followees)
     end
+
+    it 'can count followees' do
+      expect(user).to respond_to(:followees_count)
+    end
   end
 
   describe '#follow' do
@@ -201,6 +205,24 @@ describe Mongoid::Followit::Follower do
             user.followees(criteria: true)
           }.to raise_error 'HasTwoFolloweeTypesError'
         end
+      end
+    end
+  end
+
+  describe '#followees_count' do
+    context 'when there is no followees' do
+      it 'total is zero' do
+        expect(user.followees_count).to be 0
+      end
+    end
+
+    context 'when there are followees' do
+      before do
+        user.follow(admin)
+      end
+
+      it 'total is more than zero' do
+        expect(user.followees_count).to be > 0
       end
     end
   end
