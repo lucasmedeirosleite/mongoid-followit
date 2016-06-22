@@ -1,6 +1,5 @@
 module Mongoid
   module Followit
-
     ##
     # Public: Module that add followee capabilities to a Mongoid model.
     # Important: A model can only be followed if it is a Followee one.

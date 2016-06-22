@@ -1,6 +1,5 @@
 module Mongoid
   module Followit
-
     ##
     # Internal: Module that add query capabilities Follower/Followee model.
     #
@@ -22,7 +21,6 @@ module Mongoid
     #     end
     #   end
     module Queryable
-
       # Internal: Hash of options to build a query for the Follow collection.
       FOLLOW_OPTIONS = {
         followee: {
