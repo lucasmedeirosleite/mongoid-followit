@@ -1,6 +1,5 @@
 module Mongoid
   module Followit
-
     ##
     # Internal: Module that add query capabilities Follower/Followee model.
     #
@@ -22,7 +21,6 @@ module Mongoid
     #     end
     #   end
     module Queryable
-
       # Internal: Hash of options to build a query for the Follow collection.
       FOLLOW_OPTIONS = {
         followee: {
@@ -46,10 +44,15 @@ module Mongoid
         group_class = FOLLOW_OPTIONS[behavior][:class]
         grouped = Follow.where(options).group_by { |f| f.send(group_class) }
         if criteria
-          collection_as_criteria(grouped, behavior)
+          collection_as_criteria(behavior, grouped)
         else
-          collection_as_array(grouped, behavior)
+          collection_as_array(behavior, grouped)
         end
+      end
+
+      def follow_count_for_a(behavior)
+        options = query_options_for_a(behavior)
+        Follow.where(options).count
       end
 
       private
@@ -63,7 +66,7 @@ module Mongoid
         }
       end
 
-      def collection_as_criteria(grouped, behavior)
+      def collection_as_criteria(behavior, grouped)
         return Follow.none if grouped.empty?
         raise FOLLOW_OPTIONS[behavior][:exception] if grouped.length > 1
         klazz = grouped.keys.first
@@ -71,7 +74,7 @@ module Mongoid
         klazz.constantize.in(id: ids)
       end
 
-      def collection_as_array(grouped, behavior)
+      def collection_as_array(behavior, grouped)
         behavior_class = FOLLOW_OPTIONS[behavior][:class]
         behavior_id = FOLLOW_OPTIONS[behavior][:id]
         grouped.values.flatten.map do |follow|

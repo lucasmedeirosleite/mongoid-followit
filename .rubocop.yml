@@ -9,3 +9,6 @@ Style/Documentation:
 
 Rails:
   Enabled: false
+
+LineLength:
+  Max: 120

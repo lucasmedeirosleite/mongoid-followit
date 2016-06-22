@@ -1,6 +1,5 @@
 module Mongoid
   module Followit
-
     ##
     # Public: Module that add follower capabilities to a Mongoid model.
     #
@@ -87,6 +86,23 @@ module Mongoid
         follow_collection_for_a(:followee, criteria: criteria)
       end
 
+      ##
+      # Public: Peform a query to return the total of Mongoid model
+      #         that model is following.
+      #
+      # Examples
+      #
+      #   # => user.follow(another_user)
+      #   # => user.follow(different_user)
+      #   # => user.followees_count
+      #   # => 2
+      #
+      # Returns 0 if model is not following anybody.
+      # Returns The total of models that the model is following.
+      def followees_count
+        follow_count_for_a(:followee)
+      end
+
       private_class_method
 
       ##
@@ -157,9 +173,7 @@ module Mongoid
       #
       # Returns nothing.
       def destroy_follow_data
-        followee_params = { followee_class: self.class.to_s, followee_id: id  }
-        follower_params = { follower_class: self.class.to_s, follower_id: id  }
-        Follow.or(followee_params, follower_params).destroy_all
+        Follow.destroy_followable_data(self)
       end
     end
   end

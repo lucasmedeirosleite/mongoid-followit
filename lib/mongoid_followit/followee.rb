@@ -1,6 +1,5 @@
 module Mongoid
   module Followit
-
     ##
     # Public: Module that add followee capabilities to a Mongoid model.
     # Important: A model can only be followed if it is a Followee one.
@@ -43,6 +42,23 @@ module Mongoid
       #         and model has two or more types of followers
       def followers(criteria: false)
         follow_collection_for_a(:follower, criteria: criteria)
+      end
+
+      ##
+      # Public: Peform a query to return the total of followers of
+      #         the Mongoid model.
+      #
+      # Examples
+      #
+      #   # => user.follow(another_user)
+      #   # => different_user.follow(another_user)
+      #   # => another_user.followers_count
+      #   # => 2
+      #
+      # Returns 0 if model has no followers.
+      # Returns The total of followers of the model.
+      def followers_count
+        follow_count_for_a(:follower)
       end
     end
   end

@@ -15,3 +15,5 @@ metrics/simplecov
 metrics/rubycritic
 
 .DS_Store
+
+*.gem
