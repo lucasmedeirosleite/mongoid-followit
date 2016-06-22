@@ -157,9 +157,7 @@ module Mongoid
       #
       # Returns nothing.
       def destroy_follow_data
-        followee_params = { followee_class: self.class.to_s, followee_id: id  }
-        follower_params = { follower_class: self.class.to_s, follower_id: id  }
-        Follow.or(followee_params, follower_params).destroy_all
+        Follow.destroy_followable_data(self)
       end
     end
   end

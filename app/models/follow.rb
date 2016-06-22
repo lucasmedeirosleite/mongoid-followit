@@ -23,4 +23,11 @@ class Follow
       follower_id: follower.id)
       .try(:destroy)
   end
+
+  def self.destroy_followable_data(followable)
+    followable_class = followable.class.to_s
+    followee_params = { followee_class: followable_class, followee_id: followable.id }
+    follower_params = { follower_class: followable_class, follower_id: followable.id }
+    self.or(followee_params, follower_params).destroy_all
+  end
 end
