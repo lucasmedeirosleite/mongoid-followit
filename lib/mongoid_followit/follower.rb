@@ -23,6 +23,20 @@ module Mongoid
       end
 
       ##
+      # Public: Check if model is following any other model.
+      #
+      # Examples
+      #
+      #   # => person = Person.create!(name: 'Skywalker')
+      #   # => person.following?
+      #
+      # Returns true if model is following other model(s).
+      # Returns false if model is not following any model.
+      def following?
+        Follow.where(follower_class: self.class.to_s, follower_id: id).count > 0
+      end
+
+      ##
       # Public: Creates Follow entries, for the Followee models, representing
       #         the models that are being followed.
       #

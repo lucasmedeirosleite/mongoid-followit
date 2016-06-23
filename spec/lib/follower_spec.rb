@@ -18,6 +18,10 @@ describe Mongoid::Followit::Follower do
       expect(user).to respond_to(:follow)
     end
 
+    it 'is following?' do
+      expect(user).to respond_to(:following?)
+    end
+
     it 'can unfollow anything' do
       expect(user).to respond_to(:unfollow)
     end
@@ -72,6 +76,22 @@ describe Mongoid::Followit::Follower do
           expect(Follow).to receive(:find_or_create_by!).twice
           user.follow(admin, sales)
         end
+      end
+    end
+  end
+
+  describe '#follow?' do
+    context 'when following no model' do
+      it 'is not following any model' do
+        expect(user).not_to be_following
+      end
+    end
+
+    context 'when following model' do
+      before { user.follow(admin) }
+
+      it 'is following a model' do
+        expect(user).to be_following
       end
     end
   end
