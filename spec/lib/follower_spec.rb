@@ -22,6 +22,10 @@ describe Mongoid::Followit::Follower do
       expect(user).to respond_to(:unfollow)
     end
 
+    it 'can unfollow all followees' do
+      expect(user).to respond_to(:unfollow_all)
+    end
+
     it 'can have followees' do
       expect(user).to respond_to(:followees)
     end
@@ -108,6 +112,28 @@ describe Mongoid::Followit::Follower do
           user.unfollow(admin, sales)
           expect(call_count).to eq 2
         end
+      end
+    end
+  end
+
+  describe '#unfollow_all' do
+    context 'when there are no followees' do
+      it 'does not unfollow any models' do
+        expect(user.followees.count).to be 0
+        user.unfollow_all
+        expect(user.followees.count).to be 0
+      end
+    end
+
+    context 'when there are followees' do
+      before do
+        user.follow(admin, sales)
+      end
+
+      it 'unfollows all followee models' do
+        expect(user.followees.count).to be 2
+        user.unfollow_all
+        expect(user.followees.count).to be 0
       end
     end
   end

@@ -59,6 +59,19 @@ module Mongoid
       end
 
       ##
+      # Public: Destroys all Follow entries, for the Followee models,
+      #         making the Followee models to be unfollowed.
+      #
+      # Examples
+      #
+      #   # => person.unfollow_all
+      #
+      # Returns nothing.
+      def unfollow_all
+        Follow.where(follower_class: self.class.to_s, follower_id: id).destroy_all
+      end
+
+      ##
       # Public: Peform a query to return all Mongoid model
       #         that model is following.
       #
