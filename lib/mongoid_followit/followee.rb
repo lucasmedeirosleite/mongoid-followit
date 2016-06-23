@@ -18,6 +18,19 @@ module Mongoid
       end
 
       ##
+      # Public: Check if model is followed by any other model.
+      #
+      # Examples
+      #
+      #   # => person.followed?
+      #
+      # Returns true if model is followed by other model(s).
+      # Returns false if model is not followed by any model.
+      def followed?
+        Follow.where(followee_class: self.class.to_s, followee_id: id).count > 0
+      end
+
+      ##
       # Public: Peform a query to return all Mongoid model followers.
       #
       # criteria(optional) - if true the return will be the type of

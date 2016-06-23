@@ -14,12 +14,32 @@ describe Mongoid::Followit::Followee do
   end
 
   describe 'api' do
+    it 'is followed?' do
+      expect(admin).to respond_to(:followed?)
+    end
+
     it 'can have followers' do
       expect(admin).to respond_to(:followers)
     end
 
     it 'can retrieve followers count' do
       expect(admin).to respond_to(:followers_count)
+    end
+  end
+
+  describe '#followed?' do
+    context 'when no other model follows model' do
+      it 'is not followed' do
+        expect(admin).not_to be_followed
+      end
+    end
+
+    context 'when other model follows model' do
+      before { user.follow(admin) }
+
+      it 'is following a model' do
+        expect(admin).to be_followed
+      end
     end
   end
 
