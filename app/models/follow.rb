@@ -30,4 +30,11 @@ class Follow
     follower_params = { follower_class: followable_class, follower_id: followable.id }
     self.or(followee_params, follower_params).destroy_all
   end
+
+  def self.query_options(follower: nil, followee: nil)
+    options = {}
+    options.merge!(followee_class: followee.class, followee_id: followee.id) if followee.present?
+    options.merge!(follower_class: follower.class, follower_id: follower.id) if follower.present?
+    options
+  end
 end

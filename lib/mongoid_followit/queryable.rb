@@ -40,9 +40,7 @@ module Mongoid
       }.freeze
 
       def follow_collection_for_a(behavior, criteria:)
-        options = query_options_for_a(behavior)
-        group_class = FOLLOW_OPTIONS[behavior][:class]
-        grouped = Follow.where(options).group_by { |f| f.send(group_class) }
+        grouped = Follow.where(query_options_for_a(behavior)).group_by { |f| f.send(FOLLOW_OPTIONS[behavior][:class]) }
         if criteria
           collection_as_criteria(behavior, grouped)
         else
@@ -56,8 +54,7 @@ module Mongoid
       end
 
       def has_followable_link?(behavior, followable)
-        options = query_options_for_a(behavior, followable)
-        Follow.find_by(options).present?
+        Follow.find_by(query_options_for_a(behavior, followable)).present?
       rescue Mongoid::Errors::DocumentNotFound
         false
       end
@@ -65,24 +62,23 @@ module Mongoid
       private
 
       def query_options_for_a(behavior, followable = nil)
-        options_class = FOLLOW_OPTIONS[behavior][:opposite_class]
-        options_id = FOLLOW_OPTIONS[behavior][:opposite_id]
-        options = { options_class => self.class.to_s, options_id => id }
-        if followable.present?
-          options_opposite_class = FOLLOW_OPTIONS[behavior][:class]
-          options_opposite_id = FOLLOW_OPTIONS[behavior][:id]
-          options[options_opposite_class] = followable.class.to_s
-          options[options_opposite_id] = followable.id
+        if(:followee == behavior)
+          Follow.query_options(follower: self, followee: followable)
+        else
+          Follow.query_options(followee: self, follower: followable)
         end
-        options
       end
 
       def collection_as_criteria(behavior, grouped)
-        return Follow.none if grouped.empty?
-        raise FOLLOW_OPTIONS[behavior][:exception] if grouped.length > 1
-        klazz = grouped.keys.first
-        ids = grouped[klazz].map { |f| f.send(FOLLOW_OPTIONS[behavior][:id]) }
-        klazz.constantize.in(id: ids)
+        case
+        when grouped.empty?
+          Follow.none
+        when grouped.length > 1
+          raise FOLLOW_OPTIONS[behavior][:exception]
+        else
+          ids = grouped[grouped.keys.first].map { |f| f.send(FOLLOW_OPTIONS[behavior][:id]) }
+          grouped.keys.first.constantize.in(id: ids)
+        end
       end
 
       def collection_as_array(behavior, grouped)
