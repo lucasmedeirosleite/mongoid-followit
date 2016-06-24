@@ -58,6 +58,26 @@ module Mongoid
       end
 
       ##
+      # Public: Check if model is followed by another model.
+      #
+      # followable - Mongoid::Document model to check
+      #
+      # Examples
+      #
+      #   # => person.followed_by?(followable)
+      #
+      # Returns true if model is followed by self.
+      # Returns false if model is not followed by self.
+      def followed_by?(followable)
+        options = {}
+        options.merge!(follower_class: followable.class.to_s, follower_id: followable.id)
+        options.merge!(followee_class: self.class.to_s, followee_id: id)
+        Follow.find_by(options).present?
+      rescue Mongoid::Errors::DocumentNotFound
+        false
+      end
+
+      ##
       # Public: Peform a query to return the total of followers of
       #         the Mongoid model.
       #

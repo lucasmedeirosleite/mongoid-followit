@@ -37,6 +37,26 @@ module Mongoid
       end
 
       ##
+      # Public: Check if model is following the desired model.
+      #
+      # followable - Mongoid::Followee model
+      #
+      # Examples
+      #
+      #   # => person.follows?(followable)
+      #
+      # Returns true if model is following the passed model.
+      # Returns false if model is not following the passed model.
+      def follows?(followable)
+        options = {}
+        options.merge!(follower_class: self.class.to_s, follower_id: id)
+        options.merge!(followee_class: followable.class.to_s, followee_id: followable.id)
+        Follow.find_by(options).present?
+      rescue Mongoid::Errors::DocumentNotFound
+        false
+      end
+
+      ##
       # Public: Creates Follow entries, for the Followee models, representing
       #         the models that are being followed.
       #

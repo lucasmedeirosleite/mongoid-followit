@@ -22,6 +22,10 @@ describe Mongoid::Followit::Follower do
       expect(user).to respond_to(:following?)
     end
 
+    it 'can check if follows a model' do
+      expect(user).to respond_to(:follows?)
+    end
+
     it 'can unfollow anything' do
       expect(user).to respond_to(:unfollow)
     end
@@ -37,6 +41,7 @@ describe Mongoid::Followit::Follower do
     it 'can count followees' do
       expect(user).to respond_to(:followees_count)
     end
+
   end
 
   describe '#follow' do
@@ -93,6 +98,18 @@ describe Mongoid::Followit::Follower do
       it 'is following a model' do
         expect(user).to be_following
       end
+    end
+  end
+
+  describe '#follows?' do
+    context 'when not following model' do
+      it { expect(user.follows?(admin)).to be false }
+    end
+
+    context 'when following model' do
+      before { user.follow(admin) }
+
+      it { expect(user.follows?(admin)).to be true }
     end
   end
 

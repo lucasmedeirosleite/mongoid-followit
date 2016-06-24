@@ -1,3 +1,4 @@
+require 'active_support/all'
 require 'mongoid_followit/version'
 require 'mongoid_followit/queryable'
 require 'mongoid_followit/follower'
