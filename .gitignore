@@ -17,3 +17,5 @@ metrics/rubycritic
 .DS_Store
 
 *.gem
+
+.byebug_history

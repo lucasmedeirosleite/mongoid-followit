@@ -29,6 +29,10 @@ describe Mongoid::Followit::Followee do
     it 'can retrieve followers count' do
       expect(admin).to respond_to(:followers_count)
     end
+
+    it 'can retrive common follwers' do
+      expect(admin).to respond_to(:common_followers)
+    end
   end
 
   describe '#followed?' do
@@ -145,5 +149,37 @@ describe Mongoid::Followit::Followee do
         expect(admin.followers_count).to be > 0
       end
     end
+  end
+
+  describe '#common_followers' do
+    let(:second_user) { FactoryGirl.create(:user) }
+    let(:third_user)  { FactoryGirl.create(:user) }
+    let(:fourth_user) { FactoryGirl.create(:user) }
+
+    context 'when criteria false' do
+      context 'when there is no common followers' do
+        before do
+          user.follow(admin)
+          second_user.follow(role)
+        end
+
+        it { expect(admin.common_followers(role)).to be_empty }
+      end
+
+      context 'when there are common followers of one type' do
+        before do
+          user.follow(admin, role)
+          second_user.follow(admin, role)
+          third_user.follow(admin)
+          fourth_user.follow(role)
+        end
+
+        xit { expect(admin.common_followers(role)).to be [user, second_user] }
+      end
+
+      context 'when there are followees of different types'
+    end
+
+    context 'when criteria true'
   end
 end

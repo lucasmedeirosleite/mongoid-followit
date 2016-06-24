@@ -24,15 +24,11 @@ module Mongoid
       # Internal: Hash of options to build a query for the Follow collection.
       FOLLOW_OPTIONS = {
         followee: {
-          opposite_class: :follower_class,
-          opposite_id: :follower_id,
           class: :followee_class,
           id: :followee_id,
           exception: 'HasTwoFolloweeTypesError'
         },
         follower: {
-          opposite_class: :followee_class,
-          opposite_id: :followee_id,
           class: :follower_class,
           id: :follower_id,
           exception: 'HasTwoFollowerTypesError'

@@ -88,6 +88,28 @@ module Mongoid
       def followers_count
         follow_count_for_a(:follower)
       end
+
+      ##
+      # Public: Peform a query to return all common Mongoid model followers.
+      #
+      #
+      # criteria(optional) - if true the return will be the type of
+      #                      Mongoid::Criteria
+      #
+      # *followees - Mongoid::Followit::Followee models
+      # Examples
+      #
+      #   # => person.common_followers(a_person, another_person)
+      #
+      # Returns An Array of common followers if criteria argument is false.
+      # Returns A Mongoid::Criteria of common followers if criteria argument is true
+      #         and followers are of only of one type
+      # Raises  HasTwoFollowerTypesError if criteria argument is true
+      #         and model has two or more types of followers
+      def common_followers(criteria = false, *followees)
+        all_followers = followees.map { |f| f.followers } + self.followers
+        binding.pry
+      end
     end
   end
 end
