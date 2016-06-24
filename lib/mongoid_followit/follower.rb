@@ -49,8 +49,10 @@ module Mongoid
       # Returns false if model is not following the passed model.
       def follows?(followable)
         options = {}
-        options.merge!(follower_class: self.class.to_s, follower_id: id)
-        options.merge!(followee_class: followable.class.to_s, followee_id: followable.id)
+        options[:followee_class] = followable.class.to_s
+        options[:followee_id] = followable.id
+        options[:follower_class] = self.class.to_s
+        options[:follower_id] = id
         Follow.find_by(options).present?
       rescue Mongoid::Errors::DocumentNotFound
         false

@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Lucas Medeiros']
   spec.email         = ['lucastoc@gmail.com']
 
-  spec.summary       = %q{ Follow/Unfollow feature for MongoDB documents. }
-  spec.description   = %q{ Follow/Unfollow feature for MongoDB documents. }
+  spec.summary       = %q(Follow/Unfollow feature for MongoDB documents.)
+  spec.description   = %q(Follow/Unfollow feature for MongoDB documents.)
   spec.homepage      = 'https://github.com/lucasmedeirosleite'
   spec.license       = 'MIT'
 
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'activesupport', '>= 4.0'
+  spec.add_dependency 'activesupport', '4.2.5.2'
 
   spec.add_development_dependency 'bundler', '~> 1.11'
   spec.add_development_dependency 'rake', '~> 10.0'

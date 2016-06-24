@@ -25,12 +25,12 @@ Or install it yourself as:
 
 ### Usage
 
-Take as an example the following model: 
+Take as an example the following model:
 
 ```ruby
   class Person
     include Mongoid::Document
-   
+
     field :name, type: String
   end
 ```
@@ -53,7 +53,7 @@ The model to be followed MUST include the ```Mongoid::Followit::Followee``` modu
   class Profile
     include Mongoid::Document
     include Mongoid::Followit::Followee
-   
+
     field :name, type: String
   end
 ```
@@ -80,10 +80,6 @@ Every model that includes ```Mongoid::Followit::Follower``` can define callbacks
     after_unfollow :do_otherthing_after
   end
 ```
-
-### TODO
-
-Add more queryable methods. 
 
 ### Development
 
