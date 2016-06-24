@@ -55,15 +55,26 @@ module Mongoid
         Follow.where(options).count
       end
 
+      def has_followable_link?(behavior, followable)
+        options = query_options_for_a(behavior, followable)
+        Follow.find_by(options).present?
+      rescue Mongoid::Errors::DocumentNotFound
+        false
+      end
+
       private
 
-      def query_options_for_a(behavior)
+      def query_options_for_a(behavior, followable = nil)
         options_class = FOLLOW_OPTIONS[behavior][:opposite_class]
         options_id = FOLLOW_OPTIONS[behavior][:opposite_id]
-        {
-          options_class => self.class,
-          options_id => id
-        }
+        options = { options_class => self.class.to_s, options_id => id }
+        if followable.present?
+          options_opposite_class = FOLLOW_OPTIONS[behavior][:class]
+          options_opposite_id = FOLLOW_OPTIONS[behavior][:id]
+          options[options_opposite_class] = followable.class.to_s
+          options[options_opposite_id] = followable.id
+        end
+        options
       end
 
       def collection_as_criteria(behavior, grouped)

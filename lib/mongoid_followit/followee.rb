@@ -69,14 +69,7 @@ module Mongoid
       # Returns true if model is followed by self.
       # Returns false if model is not followed by self.
       def followed_by?(followable)
-        options = {}
-        options[:follower_class] = followable.class.to_s
-        options[:follower_id] = followable.id
-        options[:followee_class] = self.class.to_s
-        options[:followee_id] = id
-        Follow.find_by(options).present?
-      rescue Mongoid::Errors::DocumentNotFound
-        false
+        has_followable_link?(:follower, followable)
       end
 
       ##

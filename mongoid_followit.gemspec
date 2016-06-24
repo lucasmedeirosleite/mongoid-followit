@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Lucas Medeiros']
   spec.email         = ['lucastoc@gmail.com']
 
-  spec.summary       = %q(Follow/Unfollow feature for MongoDB documents.)
-  spec.description   = %q(Follow/Unfollow feature for MongoDB documents.)
+  spec.summary       = 'Follow/Unfollow feature for MongoDB documents.'
+  spec.description   = 'Follow/Unfollow feature for MongoDB documents.)'
   spec.homepage      = 'https://github.com/lucasmedeirosleite'
   spec.license       = 'MIT'
 

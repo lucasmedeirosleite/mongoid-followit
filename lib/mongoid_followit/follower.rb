@@ -48,14 +48,7 @@ module Mongoid
       # Returns true if model is following the passed model.
       # Returns false if model is not following the passed model.
       def follows?(followable)
-        options = {}
-        options[:followee_class] = followable.class.to_s
-        options[:followee_id] = followable.id
-        options[:follower_class] = self.class.to_s
-        options[:follower_id] = id
-        Follow.find_by(options).present?
-      rescue Mongoid::Errors::DocumentNotFound
-        false
+        has_followable_link?(:followee, followable)
       end
 
       ##
