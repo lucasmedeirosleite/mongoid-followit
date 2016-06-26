@@ -100,7 +100,7 @@ module Mongoid
       #
       # Returns An Array of common followers.
       def common_followers(*followees)
-        all_followers = [self.followers] + followees.map { |f| f.followers }
+        all_followers = [followers] + followees.map(&:followers)
         all_followers.inject(:&)
       end
     end
