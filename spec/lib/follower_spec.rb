@@ -4,6 +4,7 @@ describe Mongoid::Followit::Follower do
   subject(:user) { FactoryGirl.create(:user) }
   let(:admin) { FactoryGirl.create(:group, :admin) }
   let(:sales) { FactoryGirl.create(:group, :sales)}
+  let(:role) { FactoryGirl.create(:role)}
 
   it 'must be a mongoid document' do
     expect(user).to be_a(Mongoid::Document)
@@ -42,6 +43,9 @@ describe Mongoid::Followit::Follower do
       expect(user).to respond_to(:followees_count)
     end
 
+    it 'can retrive common follwees' do
+      expect(user).to respond_to(:common_followees)
+    end
   end
 
   describe '#follow' do
@@ -287,6 +291,39 @@ describe Mongoid::Followit::Follower do
       it 'total is more than zero' do
         expect(user.followees_count).to be > 0
       end
+    end
+  end
+
+  describe '#common_followees' do
+    let(:second_user) { FactoryGirl.create(:user) }
+    let(:third_user)  { FactoryGirl.create(:user) }
+    let(:fourth_user) { FactoryGirl.create(:user) }
+
+    context 'when there is no common followees' do
+      before do
+        user.follow(admin)
+        second_user.follow(role)
+      end
+
+      it { expect(user.common_followees(second_user)).to be_empty }
+    end
+
+    context 'when there are common followees of one type' do
+      before do
+        user.follow(admin, sales)
+        second_user.follow(admin, sales, role)
+      end
+
+      it { expect(user.common_followees(second_user)).to eq [admin, sales] }
+    end
+
+    context 'when there are followees of different types' do
+      before do
+        user.follow(admin, role)
+        second_user.follow(admin, role, sales)
+      end
+
+      it { expect(user.common_followees(second_user)).to eq [admin, role] }
     end
   end
 end

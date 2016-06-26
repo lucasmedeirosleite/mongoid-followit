@@ -98,7 +98,7 @@ module Mongoid
       #
       #   # => person.common_followers(a_person, another_person)
       #
-      # Returns An Array of common followers if criteria argument is false.
+      # Returns An Array of common followers.
       def common_followers(*followees)
         all_followers = [self.followers] + followees.map { |f| f.followers }
         all_followers.inject(:&)

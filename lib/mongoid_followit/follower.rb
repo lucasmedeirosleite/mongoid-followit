@@ -145,6 +145,21 @@ module Mongoid
         follow_count_for_a(:followee)
       end
 
+      ##
+      # Public: Peform a query to return all common Mongoid model followees.
+      #
+      # *followers - Mongoid::Followit::Follower models
+      #
+      # Examples
+      #
+      #   # => person.common_followees(a_person)
+      #
+      # Returns An Array of common followees
+      def common_followees(*followers)
+        all_followees = [self.followees] + followers.map { |f| f.followees }
+        all_followees.inject(:&)
+      end
+
       private_class_method
 
       ##
