@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Mongoid::Followit::Followee do
   subject(:admin) { FactoryGirl.create(:group, :admin) }
   let(:user) { FactoryGirl.create(:user) }
+  let(:sponsor) { FactoryGirl.create(:sponsor) }
   let(:role) { FactoryGirl.create(:role) }
 
   it 'must be a mongoid document' do
@@ -156,30 +157,35 @@ describe Mongoid::Followit::Followee do
     let(:third_user)  { FactoryGirl.create(:user) }
     let(:fourth_user) { FactoryGirl.create(:user) }
 
-    context 'when criteria false' do
-      context 'when there is no common followers' do
-        before do
-          user.follow(admin)
-          second_user.follow(role)
-        end
-
-        it { expect(admin.common_followers(role)).to be_empty }
+    context 'when there is no common followers' do
+      before do
+        user.follow(admin)
+        second_user.follow(role)
       end
 
-      context 'when there are common followers of one type' do
-        before do
-          user.follow(admin, role)
-          second_user.follow(admin, role)
-          third_user.follow(admin)
-          fourth_user.follow(role)
-        end
-
-        xit { expect(admin.common_followers(role)).to be [user, second_user] }
-      end
-
-      context 'when there are followees of different types'
+      it { expect(admin.common_followers(role)).to be_empty }
     end
 
-    context 'when criteria true'
+    context 'when there are common followers of one type' do
+      before do
+        user.follow(admin, role)
+        second_user.follow(admin, role)
+        third_user.follow(admin)
+        fourth_user.follow(role)
+      end
+
+      it { expect(admin.common_followers(role)).to eq [user, second_user] }
+    end
+
+    context 'when there are followers of different types' do
+      before do
+        user.follow(admin, role)
+        sponsor.follow(admin, role)
+        third_user.follow(admin)
+        fourth_user.follow(role)
+      end
+
+      it { expect(admin.common_followers(role)).to eq [user, sponsor] }
+    end
   end
 end
